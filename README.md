@@ -1,6 +1,6 @@
 ## Tunass
 
-[![SVG_Typing](https://readme-typing-svg.herokuapp.com/?lines=Hello%2C+I+am+Tuấn+as+Tunass;Noob+'C++'+Developer+%E2%9D%A4%EF%B8%8F;Love+'C++'+coding;Student+at+CTL)](https://github.com/Tunass)
+[![SVG_Typing](https://readme-typing-svg.herokuapp.com/?lines=Hello%2C+I+am+Tuấn+as+Tunass;Noob+C+++Developer+%E2%9D%A4%EF%B8%8F;Love+C+++coding;Student+at+CTL)](https://github.com/Tunass)
 
 <h3 align="left">😌 Something About Me:</h3>
  
