@@ -23,10 +23,11 @@ typedef pair <int,int> ii;
 const ll MOD = 1e9 + 7;
 #define dbg(...) cerr << "[" << #__VA_ARGS__ ": " << (__VA_ARGS__) << "]  "
 #define dbge(...) cerr << "[" << #__VA_ARGS__ ": " << (__VA_ARGS__) << "]" << endl;
+#define int long long
 
-const ll T = 4e6 + 5;
+const ll T = 2e6 + 5;
 
-int tree[T][4], n;
+ll tree[T][4], n;
 
 ll maxbomaytuche(ll a, ll b, ll c){
 	return max(max(a,b),c);
@@ -34,6 +35,7 @@ ll maxbomaytuche(ll a, ll b, ll c){
 
 void update(int id, int x) {
     id += n;
+
     FOR(i,0,3) tree[id][i] = x;
 
     id >>= 1;
@@ -55,7 +57,8 @@ signed main()
     
     int temp,q; 
     cin >> temp >> q;
-    n = pow(2,ceil(log2(temp)));
+    n = temp * 2;
+    
     FOR(i,0,temp - 1) {
         int x; 
         cin >> x;

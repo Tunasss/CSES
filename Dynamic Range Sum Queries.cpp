@@ -75,7 +75,7 @@ ll get(int id, int L, int R, int Lq, int Rq) {
 
 void print(int id = 1, int L = 1, int R = n) {
 	if (L == R) {
-		// dbg(id), dbg(L), dbg(R);
+		dbg(id), dbg(L), dbg(R);
 		dbge(tree[id]);
 		return;
 	}
