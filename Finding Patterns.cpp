@@ -16,80 +16,126 @@ typedef pair <int,int> ii;
 #define vll vector<ll>
 #define vi vector<int>
 #define all(v) (v).begin(), (v).end()
-#define FOR(i,x,y) for(ll i = x; i <= y; i++)
-#define FOS(i,x,y) for(ll i = x; i >= y; i--)
-const ll SIZE = 1e5 + 5;
+#define FOR(i,x,y) for(ll i = x; i <= y; ++i)
+#define FOS(i,x,y) for(ll i = x; i >= y; --i)
+#define EACH(i,x) for (auto &(i) : (x))
+#define el cout << '\n';
 const ll MOD = 1e9 + 7;
 #define dbg(...) cerr << "[" << #__VA_ARGS__ ": " << (__VA_ARGS__) << "]  "
 #define dbge(...) cerr << "[" << #__VA_ARGS__ ": " << (__VA_ARGS__) << "]" << endl;
 mt19937_64 rd(chrono::steady_clock::now().time_since_epoch().count());
 ll rand(ll l, ll r) { return uniform_int_distribution<ll>(l, r)(rd); }
 
-map<string, bool> ans;
-struct TrieNode{
-    struct TrieNode *child[26] = {NULL};;
-    int End = 0;
+struct node{
+    node* tree[128];
+    node* link;
+    bool end;
+ 
+    bool calc;
+    bool match;
 };
-
-struct TrieNode *NewNode(void)
-{
-    struct TrieNode *pNode = new TrieNode;
  
-    pNode->End = false;
+node* newNode(){
+    node* n = new node;
+    for (int i = 0; i < 128; i++)
+        n -> tree[i] = 0;
+    n -> end = n -> calc = n -> match = false;
+    n -> link = nullptr;
+    return n;
+}
  
-    for (int i = 0; i < 26; i++)
-        pNode->child[i] = NULL;
+void build(node* root){
+    queue<node*> que;
+    que.push(root);
  
-    return pNode;
+    while (!que.empty()){
+        node* v = que.front();
+        que.pop();
+        for (int i = 'a'; i <= 'z'; i++){
+            if (v -> tree[i]){
+                v -> tree[i] -> link = root;
+                node* p = v -> link;
+ 
+                while (p){
+                    if (p -> tree[i]){
+                        v -> tree[i] -> link = p -> tree[i];
+                        break;
+                    }
+ 
+                    if (!p -> link)
+                        break;
+ 
+                    p = p -> link;
+                }
+                que.push(v -> tree[i]);
+            }
+        }
+    }
+}
+ 
+void insert(node* root, string s){
+    node* v = root;
+    for (int x: s){
+        if (!v -> tree[x])
+            v -> tree[x] = newNode();
+        v = v -> tree[x];
+    }
+    v -> end = true;
 }
 
-void add(TrieNode *root, string s){
-    TrieNode *Insert = root;
-    for(int i = 0; i < s.size(); i++){
-        int pos = s[i] - 'a';
-        if(!Insert -> child[pos])
-            Insert -> child[pos] = new TrieNode();
-        Insert = Insert -> child[pos];
-    }
-    Insert -> End++;
-}
-
-void xuli(TrieNode *root, string t, int j, int&d){
-    string s;
-    TrieNode *kt = root, *save = NULL;
-    for(int i = j; i < t.size(); i++){
-        s += t[i];
-        int pos = t[i] - 'a';
-        if(!kt -> child[pos]) return;
-		kt = kt -> child[pos];
-        if(kt -> End >= 1 && !ans[s])
-                ans[s] = 1, d += kt -> End;
-    }
+void mark(node* v){
+    if (!v) return;
+ 
+    if (v -> calc) return;
+ 
+    v -> match = true;
+    v -> calc = true;
+    mark(v -> link);
 }
 
 signed main()
 {
-    ios_base::sync_with_stdio(0);cin.tie(0);cout.tie(0);
+    ios_base::sync_with_stdio(0);cin.tie(0);
     //freopen(file".INP","r",stdin);
     //freopen(file".OUT","w",stdout);
-
-    int n, d = 0;
-    string s;
-    cin >> s >> n;
-    vector<string> a(n);
-    TrieNode *root = NewNode();
-    for(int i = 0; i < n; i++){
-        cin >> a[i];
-        if(s.find(a[i][a[i].size() - 1]) != string::npos
-        && s.size() >= a[i].size())
-            add(root, a[i]);
-    } for(int i = 0; i < s.size(); i++){
-        xuli(root, s, i, d);
-        if(d == n) break;
+    string s; cin >> s;
+ 
+    int n; cin >> n;
+    vector<string> t(n);
+    node* root = newNode();
+ 
+    for (int i = 0; i < n; i++){
+        cin >> t[i];
+        insert(root, t[i]);
     }
-    for(int i = 0; i < n; i++)
-        if(ans[a[i]]) cout << "YES" << endl;
-        else cout << "NO" << endl;
-    
+ 
+    build(root);
+ 
+    node* v = root;
+    for (int x: s){
+        while (1){
+            if (v -> tree[x]){
+                v = v -> tree[x];
+                break;
+            }
+ 
+            if (!v -> link)
+                break;
+ 
+            v = v -> link;
+        }
+        mark(v);
+    }
+ 
+    for (auto x: t){
+        v = root;
+        for (int c: x)
+            v = v -> tree[c];
+        
+        if (v -> match)
+            cout << "YES";
+        else cout << "NO";
+        el;
+    }
     return 0;
 }
