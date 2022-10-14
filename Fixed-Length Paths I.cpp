@@ -52,7 +52,7 @@ void decomposition(int v, int cmp_sz, int k) {
                 }
             }
             for (auto it : vec) {
-                d[it] ++;
+                d[it] y++;
             }
         }
     }

@@ -1,4 +1,4 @@
-    #include <bits/stdc++.h>
+#include <bits/stdc++.h>
 #include <unordered_map>
 using namespace std;
 /*
@@ -18,7 +18,7 @@ YJGS8P"Y888P"Y888P"Y888P"Y8888P
 typedef long long ll;
 typedef unsigned long long ull;
 typedef string str;
-typedef pair <int,int> ii;
+typedef pair <int, int> ii;
 
 //II. Định nghĩa các từ hay dùng (snippet)
 #define file "TEST"
@@ -49,50 +49,50 @@ ll rand(ll l, ll r) { return uniform_int_distribution<ll>(l, r)(rd); }
 //V. Chương trình chính
 signed main()
 {
-    ios_base::sync_with_stdio(0);cin.tie(0);cout.tie(0);
+    ios_base::sync_with_stdio(0); cin.tie(0); cout.tie(0);
     //freopen(file".INP","r",stdin);
     //freopen(file".OUT","w",stdout);
-    
+
     int n;
     cin >> n;
- 
+
     vector<vector<char>>grid;
     vecor<vector<int>>dp;
- 
-    for(int i = 0; i < n; i++)
+
+    for (int i = 0; i < n; i++)
     {
-        vector<int>q(n,0);
+        vector<int>q(n, 0);
         vector<char>p(n);
- 
-        for(auto &x:p)
-        cin >> x;
+
+        for (auto &x : p)
+            cin >> x;
         grid.pb(p);
         dp.pb(q);
     }
-    if(grid[n-1][n-1] != '*')
-   		dp[n-1][n-1] = 1;
-    
-    for(int i = n - 2; i >= 0; i--)
+    if (grid[n - 1][n - 1] != '*')
+        dp[n - 1][n - 1] = 1;
+
+    for (int i = n - 2; i >= 0; i--)
     {
-        if(grid[i][n-1] != '*')
-        dp[i][n-1] = dp[i+1][n-1];
+        if (grid[i][n - 1] != '*')
+            dp[i][n - 1] = dp[i + 1][n - 1];
     }
- 
-    for(int i = n - 2; i >= 0; i--)
+
+    for (int i = n - 2; i >= 0; i--)
     {
-        if(grid[n-1][i] != '*')
-        dp[n-1][i] = dp[n-1][i+1];
+        if (grid[n - 1][i] != '*')
+            dp[n - 1][i] = dp[n - 1][i + 1];
     }
- 
-    for(int i = n - 2; i >= 0; i--)
+
+    for (int i = n - 2; i >= 0; i--)
     {
-        for(int j = n - 2; j >= 0; j--)
+        for (int j = n - 2; j >= 0; j--)
         {
-            if(grid[i][j] != '*')
-            dp[i][j] = (dp[i][j+1] + dp[i+1][j]) % MOD;
+            if (grid[i][j] != '*')
+                dp[i][j] = (dp[i][j + 1] + dp[i + 1][j]) % MOD;
         }
     }
- 
+
     cout << dp[0][0] << endl;
 
     cerr << "\nTime: " << clock() / double(CLOCKS_PER_SEC) << " sec.\n";

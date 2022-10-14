@@ -1,4 +1,4 @@
-#include <bits/stdc++.h>
+/*#include <bits/stdc++.h>
 #include <unordered_map>
 using namespace std;
 typedef long long ll;
@@ -79,3 +79,80 @@ int main() {
     }
 	return 0;
 }
+*/
+
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+typedef unsigned long long ull;
+typedef string str;
+typedef pair <int,int> ii;
+#define file "TEST"
+#define st first
+#define nd second
+#define pb push_back
+#define vll vector<ll>
+#define vi vector<int>
+#define all(v) (v).begin(), (v).end()
+#define FOR(i,x,y) for(ll i = x; i <= y; ++i)
+#define FOS(i,x,y) for(ll i = x; i >= y; --i)
+#define EACH(i,x) for (auto &(i) : (x))
+#define el cout << '\n';
+const ll MOD = 1e9 + 7;
+
+#define dbg(...) cerr << "[" << #__VA_ARGS__ ": " << (__VA_ARGS__) << "]  "
+#define dbge(...) cerr << "[" << #__VA_ARGS__ ": " << (__VA_ARGS__) << "]" << endl;
+
+/*
+mt19937_64 rd(chrono::steady_clock::now().time_since_epoch().count());
+ll rand(ll l, ll r) { return uniform_int_distribution<ll>(l, r)(rd); }
+*/
+
+//#define int long long
+#define int long long
+const ll N = 2e5 + 5;
+const ll D = 450;
+
+int n, q;
+int a[N], sqd[N / D + 1];
+
+signed main()
+{
+	ios_base::sync_with_stdio(0); cin.tie(0);
+
+	cin >> n >> q;
+
+	FOR(i, 1, n) cin >> a[i];
+
+	while (q--) {
+		int t; cin >> t;
+		if (t == 1) {
+			int x, y, val;
+			cin >> x >> y >> val;
+
+			for (int i = x; i <= y;) {
+				int CurBlock = i / D;
+				if (x <= CurBlock * D && CurBlock * D + D - 1 <= y) {
+					sqd[CurBlock] += val;
+					i += D;
+				}
+				else {
+					a[i] += val;
+					i++;
+				}
+			}
+		}
+		if (t == 2) {
+			int k;
+			cin >> k;
+
+			cout << a[k] + sqd[k / D];
+			el;
+		}
+	}
+	return 0;
+}
+
+
+
+

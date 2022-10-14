@@ -1,70 +1,67 @@
 #include <bits/stdc++.h>
-#include <unordered_map>
-#include <ext/pb_ds/assoc_container.hpp>
-using namespace __gnu_pbds;
+
 using namespace std;
+
 typedef long long ll;
-typedef unsigned long long ull;
-typedef string str;
-typedef pair <ll,ll> ii;
-#define file "TEST"
-#define st first
-#define nd second
-#define pb push_back
-#define lb lower_bound
-#define ub upper_bound
-#define er equal_range
-#define bin binary_search
-#define vll vector<ll>
-#define vi vector<int>
-#define all(v) (v).begin(), (v).end()
-#define FOR(i,x,y) for(ll i = x; i <= y; ++i)
-#define FOS(i,x,y) for(ll i = x; i >= y; --i)
-#define EACH(i,x) for (auto &(i) : (x))
-#define el cout << endl;
-const ll MOD = 1e9 + 7;
-#define dbg(...) cerr << "[" << #__VA_ARGS__ ": " << (__VA_ARGS__) << "]  "
-#define dbge(...) cerr << "[" << #__VA_ARGS__ ": " << (__VA_ARGS__) << "]" << endl;
-mt19937_64 rd(chrono::steady_clock::now().time_since_epoch().count());
-ll rand(ll l, ll r) { return uniform_int_distribution<ll>(l, r)(rd); }
 
-template <class T> using Tree = tree<T, null_type, less<T>, rb_tree_tag,tree_order_statistics_node_update>;
+int const N = 1e6 + 1;
 
-const int N = 2e5 + 5;
-	
-int n, q;
-ll a[N];
+ll tree[N];
+void upd(int x, int k) {
+    for (int i = x; i < N; i += i & -i) tree[i] += k;
+}
+ll get(int x) {
+    ll ans = 0;
+    for (int i = x; i > 0; i -= i & -i) ans += tree[i];
+    return ans;
+}
 
-Tree<ii> tre;
+struct item {
+    char t;
+    int a, b;
+};
 
-signed main(){
-    ios_base::sync_with_stdio(0);cin.tie(0);
+void compress(vector<int> &a, vector<item> &b) {
+    set<int> s;
+    for (auto x : a) s.insert(x);
+    for (auto x : b) {
+        if (x.t == '?') s.insert(x.a);
+        s.insert(x.b);
+    }
 
-	cin >> n >> q;
+    vector<int> z(s.begin(), s.end());
 
-	FOR(i,1,n){
-		cin >> a[i];
-		tre.insert({a[i], i});
-	}
+    for (auto &x : a)
+        x = lower_bound(z.begin(), z.end(), x) - z.begin() + 1;
+    for (auto &x : b) {
+        if (x.t == '?') x.a = lower_bound(z.begin(), z.end(), x.a) - z.begin() + 1;
+        x.b = lower_bound(z.begin(), z.end(), x.b) - z.begin() + 1;
+    }
+}
 
-	FOR(i,1,q) {
-		char c; 
-		cin >> c;
-		if (c == '!') {
-			int x,y; 
+int main() {
+    ios_base::sync_with_stdio(0); cin.tie(0); cout.tie(0);
+    int n, q; cin >> n >> q;
+    vector<int> arr(n);
+    for (auto &x : arr) cin >> x;
 
-			cin >> x >> y;
-			tre.erase({a[x],x});
+    vector<item> que;
+    while (q--) {
+        char t; int a, b; cin >> t >> a >> b;
+        que.push_back({t, a, b});
+    }
 
-			a[x] = y;
-			tre.insert({a[x],x});
-		} 
-		else {
-			int x,y;
-			cin >> x >> y;
-			cout << tre.order_of_key({y,MOD}) - tre.order_of_key({x - 1,MOD}) << '\n';
-		}
-	}
+    compress(arr, que);
 
-	return 0;
+    for (auto x : arr) upd(x, 1);
+    for (auto x : que) {
+        if (x.t == '!') {
+            upd(arr[x.a - 1], -1);
+            upd(x.b, 1);
+            arr[x.a - 1] = x.b;
+        } else {
+            cout << get(x.b) - get(x.a - 1) << "\n";
+        }
+    }
+    return 0;
 }
