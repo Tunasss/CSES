@@ -7,7 +7,7 @@ typedef pair <int, int> P;
 #define X first
 #define Y second
 
-int norm(P a, P b) {
+int distance(P a, P b) {
     return (b.X - a.X) * (b.X - a.X) + (b.Y - a.Y) * (b.Y - a.Y);
 }
 
@@ -33,9 +33,9 @@ signed main() {
         auto l = s.lower_bound({v[i].Y - dd, 0});
         auto r = s.upper_bound({v[i].Y + dd, 0});
         for (auto it = l; it != r; it++) {
-            d = min(d, norm({it->Y, it->X}, v[i]));
+            d = min(d, distance({it->Y, it->X}, v[i]));
         }
         s.insert({v[i].Y, v[i].X});
     }
-    cout << fixed << setprecision(6) << d;
-}   
+    cout << d;
+}
