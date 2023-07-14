@@ -20,9 +20,9 @@ int main()
         cin >> coins[i];      
     dp[0] = 1;    
     for (int weight = 0; weight <= x; weight++) {        
-        for (int i = 1; i <= n; i++) {            
-            if(weight - coins[i - 1] >= 0) {                
-                dp[weight] += dp[weight - coins[i - 1]];                
+        for (int i = 0; i < n; i++) {            
+            if(weight - coins[i] >= 0) {                
+                dp[weight] += dp[weight - coins[i]];                
                 dp[weight] %= MOD;            
             }        
         }    

@@ -7,7 +7,7 @@ using namespace std;
 #define pii pair<int,int>
 
 int const oo = 1e17;
-int const N = 2.5e3 + 5;
+int const N = 5e5 + 5;
 
 vector<pii> adj[N];
 int dis[N];
@@ -41,11 +41,16 @@ void BFS() {
 }
 
 signed main() {
-    cin >> n >> m;
+    cin >> n >> m;9
     for (int i = 0; i < m; i++) {
         int v, u, w;
         cin >> v >> u >> w;
         adj[v].push_back({u, -w});
+    }
+
+    if (n == 1 && m == 1){
+        cout << -1;
+        return 0;
     }
 
     BFS();

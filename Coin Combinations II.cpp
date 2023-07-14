@@ -18,7 +18,7 @@ YJGS8P"Y888P"Y888P"Y888P"Y8888P
 typedef long long ll;
 typedef unsigned long long ull;
 typedef string str;
-typedef pair <int,int> ii;
+typedef pair <int, int> ii;
 
 //II. Định nghĩa các từ hay dùng (snippet)
 #define file "TEST"
@@ -45,38 +45,38 @@ const ll MOD = 1e9 + 7;
 //IV. Định nghĩa hàm sinh số Random từ L đến R
 mt19937_64 rd(chrono::steady_clock::now().time_since_epoch().count());
 ll rand(ll l, ll r) { return uniform_int_distribution<ll>(l, r)(rd); }
+ll dp[1000001];
 
 //V. Chương trình chính
 signed main()
 {
-    ios_base::sync_with_stdio(0);cin.tie(0);cout.tie(0);
+    ios_base::sync_with_stdio(0); cin.tie(0); cout.tie(0);
     //freopen(file".INP","r",stdin);
     //freopen(file".OUT","w",stdout);
-    ll n,x;
+    ll n, x;
     cin >> n >> x;
 
     vll coin(n);
-    for (ll i = 0; i < n; i++){
-    	cin >> coin[i];
-    }    
+    for (ll i = 0; i < n; i++) {
+        cin >> coin[i];
+    }
 
-    vll dp(x + 1,0);
-    dp[0] = 1; 
-    
+    dp[0] = 1;
+
     for (ll i = 0; i < n; i++)
     {
-        for (ll j = 0; j <= x; j++)
+        for (ll weight = 0; weight <= x; weight++)
         {
-            if(j - coin[i] >= 0)
+            if (weight - coin[i] >= 0)
             {
-            dp[j] += dp[j - coin[i]];
-            dp[j] %= MOD;
+                dp[weight] += dp[weight - coin[i]];
+                dp[weight] %= MOD;
             }
         }
     }
     cout << dp[x] << endl;
 
 
-    cerr << "\nTime: " << clock() / double(CLOCKS_PER_SEC) << " sec.\n";
+    // cerr << "\nTime: " << clock() / double(CLOCKS_PER_SEC) << " sec.\n";
     return 0;
 }
