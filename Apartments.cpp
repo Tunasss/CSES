@@ -83,6 +83,4 @@ signed main()
 
     cout << count << endl;
 
-    cerr << "\nTime: " << clock() / double(CLOCKS_PER_SEC) << " sec.\n";
-    return 0;
 }
